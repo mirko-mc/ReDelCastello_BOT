@@ -9,7 +9,7 @@ const TOKEN = '1328058614:AAHpbzxl9hyUDQDQ0XHZXGVAuxTz04VA3E4';
 const options = { webHook: { port: process.env.PORT } };
 /** Link app a cui collegarsi e porta da usare */
 const url = 'https://redelcastello-bot.herokuapp.com:443';
-exports.rdc = new TelegramBot(TOKEN, options);
+exports.rdc = new telegramBot(TOKEN, options);
 this.rdc.setWebHook(`${url}/bot${TOKEN}`);
 
 /** CR API KEY */
