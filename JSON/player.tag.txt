@@ -1,0 +1,96 @@
+Player/tag 
+{
+    clan (PlayerClan, optional),
+        PlayerClan {
+        badgeId (integer, optional),
+        tag (string, optional),
+        name (string, optional),
+        badgeUrls (object, optional)
+        }
+    arena (Arena, optional),
+        Arena {
+        name (JsonLocalizedName, optional),
+        id (integer, optional),
+        iconUrls (object, optional)
+        }
+    role (string, optional),
+    wins (integer, optional),
+    losses (integer, optional),
+    totalDonations (integer, optional),
+    leagueStatistics (PlayerLeagueStatistics, optional),
+        PlayerLeagueStatistics {
+        previousSeason (LeagueSeasonResult, optional),
+        bestSeason (LeagueSeasonResult, optional),
+        currentSeason (LeagueSeasonResult, optional)
+        }
+            LeagueSeasonResult {
+            rank (integer, optional),
+            bestTrophies (integer, optional),
+            trophies (integer, optional),
+            id (string, optional)
+            }
+    cards (PlayerItemLevelList, optional),
+        PlayerItemLevelList [PlayerItemLevel]
+            PlayerItemLevel {
+            id (integer, optional),
+            count (integer, optional),
+            level (integer, optional),
+            starLevel (integer, optional),
+            name (JsonLocalizedName, optional),
+            maxLevel (integer, optional),
+            iconUrls (object, optional)
+            }
+    currentFavouriteCard (Item, optional),
+        Item {
+        iconUrls (object, optional),
+        name (JsonLocalizedName, optional),
+        id (integer, optional),
+        maxLevel (integer, optional)
+        }
+    badges (PlayerAchievementBadgeList, optional),
+        PlayerAchievementBadgeList [PlayerAchievementBadge]
+            PlayerAchievementBadge {
+            maxLevel (integer, optional),
+            progress (integer, optional),
+            level (integer, optional),
+            target (integer, optional),
+            name (string, optional)
+            }
+    tag (string, optional),
+    name (string, optional),
+    expLevel (integer, optional),
+    trophies (integer, optional),
+    bestTrophies (integer, optional),
+    donations (integer, optional),
+    donationsReceived (integer, optional),
+    achievements (PlayerAchievementProgressList, optional),
+        PlayerAchievementProgressList [PlayerAchievementProgress]
+            PlayerAchievementProgress {
+            stars (integer, optional),
+            value (integer, optional),
+            name (JsonLocalizedName, optional),
+            target (integer, optional),
+            info (JsonLocalizedName, optional),
+            completionInfo (JsonLocalizedName, optional)
+            }
+    battleCount (integer, optional),
+    threeCrownWins (integer, optional),
+    challengeCardsWon (integer, optional),
+    challengeMaxWins (integer, optional),
+    tournamentCardsWon (integer, optional),
+    tournamentBattleCount (integer, optional),
+    currentDeck (PlayerItemLevelList, optional),
+        PlayerItemLevelList [PlayerItemLevel]
+            PlayerItemLevel {
+            id (integer, optional),
+            count (integer, optional),
+            level (integer, optional),
+            starLevel (integer, optional),
+            name (JsonLocalizedName, optional),
+            maxLevel (integer, optional),
+            iconUrls (object, optional)
+            }
+    warDayWins (integer, optional),
+    clanCardsCollected (integer, optional),
+    starPoints (integer, optional)
+}

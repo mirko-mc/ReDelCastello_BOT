@@ -1,0 +1,10 @@
+Player/tag/UpcomingChests
+{
+    items (ChestList, optional)
+        ChestList [Chest]
+            Chest {
+            name (JsonLocalizedName, optional),
+            index (integer, optional),
+            iconUrls (object, optional)
+            }
+}

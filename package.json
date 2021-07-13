@@ -1,0 +1,24 @@
+{
+  "name": "redelcastello_bot",
+  "version": "1.0.0",
+  "description": "Telegram BOT ad uso esclusivo del Clan Re Del Castello",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/DarkSideLabs/ReDelCastello_BOT.git"
+  },
+  "author": "DarkSideLabs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DarkSideLabs/ReDelCastello_BOT/issues"
+  },
+  "homepage": "https://github.com/DarkSideLabs/ReDelCastello_BOT#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "node-telegram-bot-api": "^0.53.0",
+    "sqlite3": "^5.0.2"
+  }
+}
