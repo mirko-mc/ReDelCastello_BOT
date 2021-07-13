@@ -18,7 +18,6 @@
   "homepage": "https://github.com/DarkSideLabs/ReDelCastello_BOT#readme",
   "dependencies": {
     "axios": "^0.21.1",
-    "node-telegram-bot-api": "^0.53.0",
-    "sqlite3": "^5.0.2"
+    "node-telegram-bot-api": "^0.53.0"
   }
 }
