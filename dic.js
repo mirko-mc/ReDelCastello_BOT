@@ -498,7 +498,6 @@ exports.monete;
 exports.myTag = '8V80QUP';
 exports.clanTag = '#UR9Y99G';
 exports.tag = "";
-exports.bauli = "LISTA PROSSIMI BAULI\nNOME BAULE => TRA\n\n";
 exports.idDev = '865229007';
 
 exports.allCards = {

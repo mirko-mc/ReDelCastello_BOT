@@ -39,6 +39,7 @@ exports.getTrad = () => {
 
 /** funzione esporta BAULI */
 exports.getBauli = (idChat, tag) => {
+    let bauli = "LISTA PROSSIMI BAULI\nNOME BAULE => TRA\n\n";
     ax.get(link + 'players/%23' + tag, options)
         .then(res => {
             if (res.data.clan.tag == clanTag) {
