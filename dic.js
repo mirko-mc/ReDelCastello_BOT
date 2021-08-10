@@ -493,7 +493,7 @@ exports.tradCards = [{
 
 /** variabili utili */
 exports.mancanti;
-exports.mancantiLegendary = ("RARITA' => NOME CARTA => CARTE MANCANTI => MONETE\n\n");
+exports.mancantiLegendary;
 exports.level;
 exports.richieste;
 exports.rarit;

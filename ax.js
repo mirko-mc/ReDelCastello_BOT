@@ -210,6 +210,7 @@ exports.getMissingCards = (idChat, tag) => {
                 try {
                     /** preparo legenda messaggio carte mancanti */
                     mancanti = ("RARITA' => NOME CARTA => CARTE MANCANTI => RICHIESTE => MONETE\n\n");
+                    mancantiLegendary = ("RARITA' => NOME CARTA => CARTE MANCANTI => MONETE\n\n");
                     /** ordina le carte non maxate per richieste crescente */
                     noReq.sort(ordinamentoRequest);
                     legendary.sort(ordinamentoMissing);
