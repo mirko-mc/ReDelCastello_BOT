@@ -35,7 +35,7 @@ try {
 
 try {
     rdc.onText(/\/mancanti (.+)/, (msg, match) => {
-        getMissingCards(msg.from.id, match[1]);
+        getMissingCards(msg.from.id, match[1].toUpperCase());
     })
 } catch (error) {
     console.log('---------- ERRORE /MANCANTI TAG ----------\n' + error.message);
@@ -51,7 +51,7 @@ try {
 
 try {
     rdc.onText(/\/bauli (.+)/, (msg, match) => {
-        getBauli(msg.from.id, match[1]);
+        getBauli(msg.from.id, match[1].toUpperCase());
     })
 } catch (error) {
     console.log('---------- ERRORE /BAULI TAG ----------\n' + error.message);

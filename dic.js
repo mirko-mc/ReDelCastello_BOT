@@ -1,8 +1,6 @@
 /** include la libreria TelegramBot per comunicare con @ReDelCastello_BOT */
 const telegramBot = require('node-telegram-bot-api');
 
-/** creazione istanza nuovo bot con passaggio token e opzione polling */
-//exports.rdc = new telegramBot('1328058614:AAHpbzxl9hyUDQDQ0XHZXGVAuxTz04VA3E4', { polling: true });
 
 /* ------------------------------------------------------------- HEROKU */
 const TOKEN = '1328058614:AAHpbzxl9hyUDQDQ0XHZXGVAuxTz04VA3E4';
@@ -11,6 +9,10 @@ const options = { webHook: { port: process.env.PORT } };
 const url = 'https://redelcastello-bot.herokuapp.com:443';
 exports.rdc = new telegramBot(TOKEN, options);
 this.rdc.setWebHook(`${url}/bot${TOKEN}`);
+/** creazione istanza nuovo bot con passaggio token e opzione polling */
+/*
+exports.rdc = new telegramBot(TOKEN, { polling: true });
+*/
 
 /** CR API KEY */
 exports.ApiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImRhMGRiNDIwLTE0OTctNDAzNC1iZTAzLTEwYzM1MmQ0YTIyZSIsImlhdCI6MTYyMTYyMDE1MSwic3ViIjoiZGV2ZWxvcGVyLzcwMmUwZmQ0LWQ0Y2ItNTFmOS00YmVhLTJhNWRlZDNlNzAzOSIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyIxMjguMTI4LjEyOC4xMjgiXSwidHlwZSI6ImNsaWVudCJ9XX0.dyZgDfLgw-BPi6gNMzIOHRm7FZLVJZ9IXf46YEM4llbm011jbXpU38hIOa0ex426R9gQFFEogpfEhdWjYk3Wvw';
@@ -491,6 +493,7 @@ exports.tradCards = [{
 
 /** variabili utili */
 exports.mancanti;
+exports.mancantiLegendary = ("RARITA' => NOME CARTA => CARTE MANCANTI => MONETE\n\n");
 exports.level;
 exports.richieste;
 exports.rarit;

@@ -1,7 +1,7 @@
 /** AXIOS, options, dati per HTTPS request */
 const ax = require('axios');
 const { tradCards, up, rdc, myTag, ApiKey, link, clanTag, idDev, idChat, tag, tradChests } = require('./dic');
-let { bauli, mancanti, level, richieste, rarit, monete } = require('./dic');
+let { mancanti, mancantiLegendary, level, richieste, rarit, monete } = require('./dic');
 const options = {
     method: "get",
     headers: {
@@ -87,7 +87,7 @@ exports.getMissingCards = (idChat, tag) => {
                                 if (card.level != card.maxLevel) {
                                     /** assegno carte, richieste e monete necessarie all'upgrade */
                                     mancanti = up.common.cards[card.level - 1] - card.count;
-                                    richieste = mancanti / 40;
+                                    richieste = Math.ceil(mancanti / 40);
                                     monete = up.common.money[card.level - 1];
                                 }
                                 /** assegno rarità */
@@ -98,7 +98,7 @@ exports.getMissingCards = (idChat, tag) => {
                                 level = card.level + 2;
                                 if (card.level != card.maxLevel) {
                                     mancanti = up.rare.cards[card.level - 1] - card.count;
-                                    richieste = mancanti / 4;
+                                    richieste = richieste = Math.ceil(mancanti / 4);
                                     monete = up.rare.money[card.level - 1];
                                 }
                                 rarit = 'R';
@@ -108,7 +108,7 @@ exports.getMissingCards = (idChat, tag) => {
                                 level = card.level + 5;
                                 if (card.level != card.maxLevel) {
                                     mancanti = up.epic.cards[card.level - 1] - card.count;
-                                    richieste = mancanti / 4;
+                                    richieste = Math.ceil(mancanti / 4);
                                     monete = up.epic.money[card.level - 1];
                                 }
                                 rarit = 'E';
@@ -155,8 +155,26 @@ exports.getMissingCards = (idChat, tag) => {
                         }
                     })
                 });
+                /** primo messaggio con chiave di lettura delle carte mancanti */
+                mancanti = ("<=====  CHIARIMENTI  =====>\n"
+                    + "- Vengono listate massimo 75 carte delle carte totali.\n"
+                    + "- Le carte che non possono essere richieste non sono listate.\n"
+                    + "- Le carte mancanti, richieste e monete necessarie indicano i rispettivi requisiti al raggiungimento del livello massimo della carta.\n"
+                    + "- Le carte leggendarie verranno listate a parte in quanto non richiedibili.");
+                rdc.sendMessage(idChat, mancanti);
                 /** funzine ordinamento crescente basato sulle carte mancanti */
-                const ordinamento = (a, b) => {
+                const ordinamentoRequest = (a, b) => {
+                    if (a.request < b.request) {
+                        console.log(a.request + '\t' + b.request)
+                        return -1;
+                    } else if (a.request > b.request) {
+                        console.log(a.request + '\t' + b.request)
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+                const ordinamentoMissing = (a, b) => {
                     if (a.missing < b.missing) {
                         return -1;
                     } else if (a.missing > b.missing) {
@@ -166,10 +184,11 @@ exports.getMissingCards = (idChat, tag) => {
                     }
                 }
                 /** dichiaro noMax contenitore di oggetti ed isolo le carte non maxate altrimenti l'ordinamento non ha effetto per via della stringa MAXATA */
-                let noMax = [];
+                let noReq = [];
+                let legendary = [];
                 cards.forEach(card => {
-                    if (card.missing != 'MAXATA') {
-                        noMax.push({
+                    if (card.missing != 'MAXATA' && card.missing != 0 && card.request != 'NR') {
+                        noReq.push({
                             rarity: card.rarity,
                             missing: card.missing,
                             lvl: card.lvl,
@@ -178,32 +197,45 @@ exports.getMissingCards = (idChat, tag) => {
                             money: card.money
                         })
                     }
+                    if (card.missing != 'MAXATA' && card.missing != 0 && card.rarity === 'L') {
+                        legendary.push({
+                            rarity: card.rarity,
+                            missing: card.missing,
+                            lvl: card.lvl,
+                            name: card.name,
+                            money: card.money
+                        })
+                    }
                 })
-                /** ordina le carte non maxate per richieste crescente */
-                noMax = noMax.sort(ordinamento);
-                /** primo messaggio con chiave di lettura delle carte mancanti */
-                mancanti = ("<=====  CHIARIMENTI  =====>\n"
-                    + "- Vengono mostrate massimo 75 carte delle carte totali e le carte maxate non sono listate.\n"
-                    + "- Le carte mancanti, richieste e monete necessarie indicano i rispettivi requisiti al raggiungimento del livello massimo della carta.\n"
-                    + "- Le carte mancanti a 0 sono solo da upgradare e NON si possono richiedere (NR).\n"
-                    + "- Delle leggendarie NON vengono mostrate le richieste necessarie perchè NON si possono richiedere (NR).\n"
-                    + "- Il conteggio delle richieste necessarie NON è corretto per i livelli bassi.\n\n");
-                rdc.sendMessage(idChat, mancanti);
-                /** preparo legenda messaggio carte mancanti */
-                mancanti = ("RARITA' => NOME CARTA => CARTE MANCANTI => RICHIESTE => MONETE\n\n");
                 try {
+                    /** preparo legenda messaggio carte mancanti */
+                    mancanti = ("RARITA' => NOME CARTA => CARTE MANCANTI => RICHIESTE => MONETE\n\n");
+                    /** ordina le carte non maxate per richieste crescente */
+                    noReq.sort(ordinamentoRequest);
+                    legendary.sort(ordinamentoMissing);
                     /** ciclo i primi 75 oggetti altrimenti il messaggio è troppo lungo e Telegram restituisce errore
                      *  ed invio messaggio formattato 
-                    **/
-                    for (let i = 0; i < 75; i++) mancanti += noMax[i].rarity + '  =>  ' + noMax[i].name + '  =>  ' + noMax[i].missing + '  =>  ' + noMax[i].request + '  =>  ' + noMax[i].money + '\n';
+                     **/
+                    for (let i = 0; i < noReq.length; i++) {
+                        if (noReq[i].rarity != 'L') {
+                            mancanti += noReq[i].rarity + '  =>  ' + noReq[i].name + '  =>  ' + noReq[i].missing + '  =>  ' + noReq[i].request + '  =>  ' + noReq[i].money + '\n';
+                        }
+                        if (i === 75) break;
+                    }
                     rdc.sendMessage(idChat, mancanti);
+                    for (let i = 0; i < legendary.length; i++) {
+                        if (legendary[i].rarity === 'L') {
+                            mancantiLegendary += legendary[i].rarity + '  =>  ' + legendary[i].name + '  =>  ' + legendary[i].missing + '  =>  ' + legendary[i].money + '\n';
+                        }
+                    }
+                    rdc.sendMessage(idChat, mancantiLegendary);
                 } catch (error) {
-                    console.log('ERRORE INVIO CARTE MANCANTI' + error.message);
+                    console.log('ERRORE INVIO CARTE MANCANTI\n' + error.message);
                 }
             }
         })
         .catch(err => {
-            console.log("ERRORE getMissingCards: " + err.message);
+            console.log("ERRORE getMissingCards:\n" + err.message);
         })
 }
 
